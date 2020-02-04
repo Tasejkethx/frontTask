@@ -1,5 +1,15 @@
 module.exports = {
+  modules: [
+    '@nuxtjs/axios',
+    'bootstrap-vue/nuxt',
+  ],
+
+
+  axios: {
+    // proxyHeaders: false
+  },
   /*
+
   ** Headers of the page
   */
   head: {
@@ -11,14 +21,10 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: "stylesheet", type: "text/css", href: "https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" }
+
     ]
   },
-  script: [
-    { src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js' },
-    { src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js' },
-    { src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js' }
-  ],
+
   /*
   ** Customize the progress bar color
   */
@@ -30,13 +36,7 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-    modules: [
-      '@nuxtjs/axios',
-    ],
 
-    axios: {
-      // proxyHeaders: false
-    },
 
     extend (config, { isDev, isClient }) {
       if (isDev && isClient) {
@@ -49,5 +49,4 @@ module.exports = {
       }
     }
   }
-}
-
+};
