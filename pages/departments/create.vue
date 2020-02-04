@@ -1,10 +1,10 @@
-<!--
+
 <template>
   <div class="container">
-    <department-form-component
+    <formComponent
       v-model="department.name"
     >
-    </department-form-component>
+    </formComponent>
     <div class="button-wrapper-send-form mt-2">
       <button class="btn btn-primary mt-3 form-width-button" @click="create"> Создать</button>
     </div>
@@ -12,10 +12,10 @@
 </template>
 
 <script>
-  import SwalAlerts from '../../Swal';
-  import validationErrors from '../../validationErrors';
 
+  import formComponent from './formComponent';
   export default {
+    components :{ formComponent},
     data() {
       return {
         department: {
@@ -24,21 +24,8 @@
       };
     },
     methods: {
-      getName: function(myName) {
-        this.name = myName;
-      },
       create() {
-        Axios.post('../department', this.department).then((response) => {
-          if (response.data.id > 0) {
-            SwalAlerts.departmentSuccessAdded();
-            this.$router.push({path: '/departments'});
-          } else {
-            SwalAlerts.errorMessage();
-          }
-        }).catch(error => {
-          validationErrors.showErrors(error);
-        });
-
+        this.$axios.$post('http://127.0.0.1:8000/department', this.department);
       },
 
     },
@@ -55,4 +42,4 @@
     justify-content: center;
   }
 </style>
--->
+
