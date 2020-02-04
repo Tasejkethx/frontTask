@@ -1,11 +1,11 @@
-<!--
+
 <template>
   <div class="container">
-    <department-form-component
+    <formComponent
       :myName="department.name"
       v-model="department.name"
     >
-    </department-form-component>
+    </formComponent>
     <div class="button-wrapper-send-form">
       <button type='submit' class="btn btn-primary mt-3 form-width-button" :disabled="loadSpinner"
               @click="editDepartment"><i
@@ -16,10 +16,12 @@
 </template>
 
 <script>
-  import SwalAlerts from '../../Swal';
-  import validationErrors from '../../validationErrors';
+ /* import SwalAlerts from '../../Swal';
+  import validationErrors from '../../validationErrors';*/
+ import formComponent from "../formComponent";
 
   export default {
+    components: {formComponent},
     data() {
       return {
         department: {
@@ -33,28 +35,12 @@
       this.fetch();
     },
     methods: {
-      editDepartment() {
-        Axios.put('../../department/' + this.department.id, this.department).then((response) => {
-          if (response.data.id > 0) {
-            SwalAlerts.departmentSuccessUpdated();
-            this.$router.push({path: '/departments'});
-          } else {
-            SwalAlerts.departmentNotFound();
-            this.$router.push({path: '/departments'});
-          }
-        }).catch(error => {
-          validationErrors.showErrors(error);
-        });
+     async editDepartment() {
+       await this.$axios.put('http://127.0.0.1:8000/department/' + this.department.id, this.department);
       },
-      fetch() {
+    async  fetch() {
         this.loadSpinner = true;
-        Axios.get('../../department/' + this.$route.params.id + '/edit').then(response => {
-          this.department = response.data;
-          this.loadSpinner = false;
-        }).catch(error => {
-          SwalAlerts.errorMessage(error);
-          this.$router.push({path: '/departments'});
-        });
+       this.department= await this.$axios.$get('http://127.0.0.1:8000/department/' + this.$route.params.id + '/edit');
       },
     },
   };
@@ -70,4 +56,3 @@
     justify-content: center;
   }
 </style>
--->
