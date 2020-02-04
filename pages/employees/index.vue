@@ -53,7 +53,7 @@
         loadSpinner: false,
       };
     },
-   async mounted() {
+    mounted() {
       this.fetch();
     },
     methods: {
