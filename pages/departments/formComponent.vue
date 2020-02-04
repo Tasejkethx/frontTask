@@ -1,4 +1,4 @@
-<!--
+
 <template>
   <div class="container">
     <div class="flex-center">
@@ -9,7 +9,7 @@
         <div class="mb-3">
           <label for="name" class="font-weight-bold"> Название отдела </label>
           <input class="form-control" type="text" id="name" name='name' v-bind:value="myName"
-                 v-on:input="$emit('input', $event.target.value)" @input="deleteErrorMessages('name')">
+                 v-on:input="$emit('input', $event.target.value)" >
         </div>
       </form>
     </div>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import validationErrors from '../../validationErrors';
+
 
   export default {
     props: {
@@ -26,9 +26,7 @@
       },
     },
     methods: {
-      deleteErrorMessages(subject) {
-        validationErrors.deleteErrorMessages(subject);
-      },
+
     },
   };
 </script>
@@ -40,4 +38,4 @@
     justify-content: center;
   }
 </style>
--->
+
