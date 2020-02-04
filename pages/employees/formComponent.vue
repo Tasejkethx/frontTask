@@ -1,4 +1,4 @@
-<!--
+
 <template>
   <div class="container">
     <div class="flex-center">
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-  import validationErrors from '../../validationErrors';
+/*  import validationErrors from '../../validationErrors';*/
 
   export default {
     props: {
@@ -84,7 +84,7 @@
         this.$emit('update:department_id', this.department_id);
       },
       deleteErrorMessages(subject) {
-        validationErrors.deleteErrorMessages(subject);
+      /*  validationErrors.deleteErrorMessages(subject);*/
       },
     },
   };
@@ -97,4 +97,4 @@
     justify-content: center;
   }
 </style>
--->
+
