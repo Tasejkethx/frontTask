@@ -1,7 +1,6 @@
-<!--
 <template>
   <div class="container">
-    <employee-form-component
+    <employeeFormComponent
       :name.sync="employee.name"
       :surname.sync="employee.surname"
       :patronymic.sync="employee.patronymic"
@@ -10,7 +9,7 @@
       :department_id.sync="employee.department_id"
       :departments="departments"
     >
-    </employee-form-component>
+    </employeeFormComponent>
     <div class="button-wrapper-send-form mt-2">
       <button type='submit' class="btn btn-primary mt-3 mr-2 form-width-button" :disabled="loadSpinner"
               @click="create"><i
@@ -21,10 +20,13 @@
 </template>
 
 <script>
-  import SwalAlerts from '../../Swal';
-  import validationErrors from '../../validationErrors';
 
+ /* import SwalAlerts from '../../Swal';
+  import validationErrors from '../../validationErrors';*/
+
+import employeeFormComponent from "./formComponent";
   export default {
+    components: {employeeFormComponent},
     data() {
       return {
         employee: {
@@ -43,35 +45,13 @@
       this.fetch();
     },
     methods: {
-      create() {
-        Axios.post('../employee', this.employee).then((response) => {
-          if (response.data.id > 0) {
-            SwalAlerts.employeeSuccessAdded();
-            this.$router.push({path: '/employees'});
-          } else {
-            SwalAlerts.employeeFailAdded();
-          }
-        }).catch(error => {
-          validationErrors.showErrors(error);
-        });
+    async  create() {
+  let status = await this.$axios.$post('http://127.0.0.1:8000/employee', this.employee);
       },
-      fetch() {
+     async fetch() {
         this.loadSpinner = true;
-        Axios.get('../department').then(response => {
-          this.departments = response.data;
-          if (!this.departments.length) {
-            Swal.fire({
-              title: 'Предупреждение',
-              text: 'Сперва добавьте отделы',
-              type: 'warning',
-              confirmButtonColor: '#3085d6',
-              confirmButtonText: 'Ок',
-            }).then((result) => {
-              this.$router.push({path: '/employees'});
-            });
-          }
-          this.loadSpinner = false;
-        }).catch(error => {console.log(error);});
+        this.departments = await this.$axios.$get('http://127.0.0.1:8000/department');
+        this.loadSpinner = false;
       },
     },
   };
@@ -87,4 +67,4 @@
     justify-content: center;
   }
 </style>
--->
+
