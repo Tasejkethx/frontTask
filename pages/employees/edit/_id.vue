@@ -1,16 +1,59 @@
-
 <template>
   <div class="container">
-    <formComponent
-      :name.sync="employee.name"
-      :surname.sync="employee.surname"
-      :patronymic.sync="employee.patronymic"
-      :sex.sync="employee.sex"
-      :salary.sync="employee.salary"
-      :department_id.sync="employee.department_id"
-      :departments="departments"
+    <div class="text-center py-3 mb-2">
+      <h4> Изменение сотрудника</h4>
+    </div>
+    <inputNameForm
+      name="name"
+      id="name"
+      label="Имя"
+      type="text"
+      :value.sync="employee.name"
     >
-    </formComponent>
+    </inputNameForm>
+
+    <inputSurnameForm
+      name="surname"
+      id="surname"
+      label="Фамилия"
+      type="text"
+      :value.sync="employee.surname"
+    >
+    </inputSurnameForm>
+
+    <inputPatronymicForm
+      name="patronymic"
+      id="patronymic"
+      label="Отчество"
+      type="text"
+      :value.sync="employee.patronymic"
+    >
+    </inputPatronymicForm>
+
+    <radioSexForm
+      title="Пол"
+      :selected.sync="employee.sex"
+      :radio-buttons="radios"
+    >
+    </radioSexForm>
+
+    <inputSalaryForm
+      name="salary"
+      id="salary"
+      label="Заработная плата"
+      type="number"
+      :value.sync="employee.salary"
+    >
+    </inputSalaryForm>
+
+    <inputCheckboxForm
+      title="Отделения"
+      :selected="employee.department_id"
+      @onDepChange="employee.department_id=$event"
+      :check-buttons="departments"
+    >
+    </inputCheckboxForm>
+
     <div class="button-wrapper-send-form">
       <button type='submit' class="btn btn-primary mt-3 mr-2 form-width-button" :disabled="loadSpinner"
               @click="editEmployee"><i
@@ -24,24 +67,51 @@
 
   /*  import SwalAlerts from '../../Swal';
     import validationErrors from '../../validationErrors';*/
-
-  import formComponent from '../formComponent';
+  import radioSexForm from '../../../components/FormComponents/radioForm';
+  import inputSalaryForm from '../../../components/FormComponents/inputForm';
+  import inputPatronymicForm from '../../../components/FormComponents/inputForm';
+  import inputSurnameForm from '../../../components/FormComponents/inputForm';
+  import inputNameForm from '../../../components/FormComponents/inputForm';
+  import inputCheckboxForm from '../../../components/FormComponents/checkboxForm';
 
   export default {
-    validate ({ params }) {
-      return /^\d+$/.test(params.id)
+    components: {
+      inputNameForm,
+      inputSurnameForm,
+      inputPatronymicForm,
+      inputSalaryForm,
+      radioSexForm,
+      inputCheckboxForm,
     },
-    components: {formComponent},
+
+    validate({params}) {
+      return /^\d+$/.test(params.id);
+    },
+
     data() {
       return {
         employee: {
-          name: null,
-          surname: null,
-          patronymic: null,
+          name: String,
+          surname: String,
+          patronymic: String,
           sex: null,
-          salary: null,
+          salary: Number,
           department_id: [],
         },
+        radios: [
+          {
+            name: 'sex',
+            id: 'male',
+            label: 'Мужчина',
+            value: 'male',
+          },
+          {
+            name: 'sex',
+            id: 'female',
+            label: 'Женщина',
+            value: 'female',
+          }]
+        ,
         departments: [],
         loadSpinner: false,
       };
@@ -51,12 +121,17 @@
     },
     methods: {
       editEmployee() {
-        this.$axios.$put('http://127.0.0.1:8000/employee/' + this.employee.id, this.employee)
+        this.$axios.$put('http://127.0.0.1:8000/employee/' + this.employee.id, this.employee);
       },
       async fetch() {
         this.loadSpinner = true;
         this.employee = await this.$axios.$get('http://127.0.0.1:8000/employee/' + this.$route.params.id + '/edit');
         this.departments = await this.$axios.$get('http://127.0.0.1:8000/department');
+        let mass = [];
+        this.employee.departments.forEach((element) => {
+          mass.push(Number(element.id));
+        });
+        this.employee.department_id = mass;
         this.loadSpinner = false;
       },
 

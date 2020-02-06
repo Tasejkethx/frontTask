@@ -1,15 +1,60 @@
 <template>
   <div class="container">
-    <employeeFormComponent
-      :name.sync="employee.name"
-      :surname.sync="employee.surname"
-      :patronymic.sync="employee.patronymic"
-      :sex.sync="employee.sex"
-      :salary.sync="employee.salary"
-      :department_id.sync="employee.department_id"
-      :departments="departments"
+    <div class="text-center py-3 mb-2">
+      <h4> Добавление нового сотрудника</h4>
+    </div>
+
+    <inputNameForm
+      name="name"
+      id="name"
+      label="Имя"
+      type="text"
+      :value.sync="employee.name"
     >
-    </employeeFormComponent>
+    </inputNameForm>
+
+    <inputSurnameForm
+      name="surname"
+      id="surname"
+      label="Фамилия"
+      type="text"
+      :value.sync="employee.surname"
+    >
+    </inputSurnameForm>
+
+    <inputPatronymicForm
+      name="patronymic"
+      id="patronymic"
+      label="Отчество"
+      type="text"
+      :value.sync="employee.patronymic"
+    >
+    </inputPatronymicForm>
+
+    <radioSexForm
+      title="Пол"
+      :selected.sync="employee.sex"
+      :radio-buttons="radios"
+    >
+    </radioSexForm>
+
+    <inputSalaryForm
+      name="salary"
+      id="salary"
+      label="Заработная плата"
+      type="number"
+      :value.sync="employee.salary"
+    >
+    </inputSalaryForm>
+
+    <inputCheckboxForm
+      title="Отделения"
+      :selected="employee.department_id"
+      @onDepChange="employee.department_id=$event"
+      :check-buttons="departments"
+    >
+    </inputCheckboxForm>
+
     <div class="button-wrapper-send-form mt-2">
       <button type='submit' class="btn btn-primary mt-3 mr-2 form-width-button" :disabled="loadSpinner"
               @click="create"><i
@@ -21,12 +66,24 @@
 
 <script>
 
- /* import SwalAlerts from '../../Swal';
-  import validationErrors from '../../validationErrors';*/
+  /* import SwalAlerts from '../../Swal';
+   import validationErrors from '../../validationErrors';*/
+  import radioSexForm from '../../components/FormComponents/radioForm';
+  import inputSalaryForm from '../../components/FormComponents/inputForm';
+  import inputPatronymicForm from '../../components/FormComponents/inputForm';
+  import inputSurnameForm from '../../components/FormComponents/inputForm';
+  import inputNameForm from '../../components/FormComponents/inputForm';
+  import inputCheckboxForm from '../../components/FormComponents/checkboxForm';
 
-import employeeFormComponent from "./formComponent";
   export default {
-    components: {employeeFormComponent},
+    components: {
+      inputNameForm,
+      inputSurnameForm,
+      inputPatronymicForm,
+      inputSalaryForm,
+      radioSexForm,
+      inputCheckboxForm,
+    },
     data() {
       return {
         employee: {
@@ -37,6 +94,20 @@ import employeeFormComponent from "./formComponent";
           salary: null,
           department_id: [],
         },
+        radios: [
+          {
+            name: 'sex',
+            id: 'male',
+            label: 'Мужчина',
+            value: 'male',
+          },
+          {
+            name: 'sex',
+            id: 'female',
+            label: 'Женщина',
+            value: 'female',
+          }]
+        ,
         departments: [],
         loadSpinner: false,
       };
@@ -45,10 +116,10 @@ import employeeFormComponent from "./formComponent";
       this.fetch();
     },
     methods: {
-    async  create() {
-  let status = await this.$axios.$post('http://127.0.0.1:8000/employee', this.employee);
+      async create() {
+        let status = await this.$axios.$post('http://127.0.0.1:8000/employee', this.employee);
       },
-     async fetch() {
+      async fetch() {
         this.loadSpinner = true;
         this.departments = await this.$axios.$get('http://127.0.0.1:8000/department');
         this.loadSpinner = false;

@@ -1,21 +1,33 @@
-
 <template>
   <div class="container">
-    <formComponent
-      v-model="department.name"
-    >
-    </formComponent>
+    <div class="text-center py-3 mb-2">
+      <h4> Добавление нового отдела</h4>
+    </div>
+    <form id="newForm">
+      <div class="flex-center">
+        <div class="mb-3">
+          <inputNameForm
+            :value.sync="department.name"
+            id="name"
+            label="Название отдела"
+            name="name"
+          >
+          </inputNameForm>
+        </div>
+      </div>
+    </form>
     <div class="button-wrapper-send-form mt-2">
-      <button class="btn btn-primary mt-3 form-width-button" @click="create"> Создать</button>
+      <button @click="create" class="btn btn-primary mt-3 form-width-button"> Создать</button>
     </div>
   </div>
 </template>
 
 <script>
 
-  import formComponent from './formComponent';
+  import inputNameForm from '../../components/FormComponents/inputForm';
+
   export default {
-    components :{ formComponent},
+    components: {inputNameForm},
     data() {
       return {
         department: {
@@ -33,6 +45,12 @@
 </script>
 
 <style scoped>
+  .flex-center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
   .form-width-button {
     width: calc(35% - 60px);
   }
