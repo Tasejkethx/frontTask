@@ -4,10 +4,10 @@ module.exports = {
     'bootstrap-vue/nuxt',
   ],
 
-
   axios: {
-    // proxyHeaders: false
+    proxy: true // Can be also an object with default options
   },
+
   /*
 
   ** Headers of the page
@@ -21,9 +21,12 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-
+      { rel: "stylesheet", type: "text/css", href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.css' },
     ]
   },
+  script: [
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.js' },
+  ],
 
   /*
   ** Customize the progress bar color
