@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-    <nuxt-link to="/employees/create" class="btn btn-dark mb-5" :disable="loadSpinner">
-      <i v-if="loadSpinner" class="fa fa-spin fa-spinner"></i>
-      <i v-else class="fas fa-plus"></i> Добавить сотрудника
+    <nuxt-link class="btn btn-dark mb-5" to="/employees/create">
+      <i class="fas fa-plus"></i> Добавить сотрудника
     </nuxt-link>
     <div class="table-responsive" id="success_message">
       <table class="table table-striped table-sm">
@@ -19,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="employee in employees.data" :key="employee.id">
+        <tr :key="employee.id" v-for="employee in employees.data">
           <td>{{employee.id}}</td>
           <td>{{employee.name}}</td>
           <td>{{employee.surname}}</td>
@@ -29,10 +28,10 @@
           <td>{{employee.salary}}$</td>
           <td> {{getDepartmentNames(employee.departments)}}</td>
           <td>
-            <a href="#" @click.prevent="openEmployee(employee.id)" class="btn btn-sm btn-info">
+            <a @click.prevent="openEmployee(employee.id)" class="btn btn-sm btn-info" href="#">
               <i class="fas fa-edit"></i> Редактировать
             </a>
-            <a href="#" @click.prevent="confirmDelete(employee.id)" class="btn btn-sm btn-danger">
+            <a @click.prevent="confirmDelete(employee.id)" class="btn btn-sm btn-danger" href="#">
               <i class="fas fa-trash-alt"></i> Удалить
             </a>
           </td>
@@ -46,26 +45,23 @@
 <script>
 
   export default {
+    async asyncData({$axios}) {
+      const employees = await $axios.$get('http://127.0.0.1:8000/employee');
+      return {employees};
+    },
     data() {
       return {
         employees: {},
-        departments: {},
-        loadSpinner: false,
       };
-    },
-    mounted() {
-      this.fetch();
     },
     methods: {
       async fetch() {
-        this.loadSpinner = true;
         this.employees = await this.$axios.$get('http://127.0.0.1:8000/employee');
-        this.loadSpinner = false;
       },
-      openEmployee(id){
-        this.$router.push('/employees/edit/'+id);
+      openEmployee(id) {
+        this.$router.push('/employees/edit/' + id);
       },
-     async confirmDelete(id){
+      async confirmDelete(id) {
         await this.$axios.$delete('http://127.0.0.1:8000/employee/' + id);
         await this.fetch();
       },
@@ -77,7 +73,7 @@
         return mass.join(', ');
       },
     },
-  }
+  };
 </script>
 
 <style scoped>

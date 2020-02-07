@@ -1,9 +1,8 @@
 <template>
   <div class="container">
-    <router-link to="/departments/create" class="btn btn-dark mb-5" :disabled="loadSpinner">
-      <i v-if="loadSpinner" class="fa fa-spin fa-spinner"></i>
-      <i v-else class="fas fa-plus"></i> Добавить отдел
-    </router-link>
+    <nuxt-link class="btn btn-dark mb-5" to="/departments/create">
+      <i class="fas fa-plus"></i> Добавить отдел
+    </nuxt-link>
     <div class="table-responsive">
       <table class="table table-striped table-sm">
         <thead>
@@ -16,17 +15,17 @@
         </tr>
         </thead>
         <tbody v-if="departments.length">
-        <tr v-for="department in departments" :key="department.id">
+        <tr :key="department.id" v-for="department in departments">
           <td> {{department.id}}</td>
           <td> {{department.name}}</td>
           <td> {{department.amount}}</td>
           <td> {{department.max_salary}}$</td>
           <td>
-            <a  href="#" @click.prevent="openDepartment(department.id)" class="btn btn-sm btn-info">
+            <a @click.prevent="openDepartment(department.id)" class="btn btn-sm btn-info" href="#">
               <i class="fas fa-edit"></i> Редактировать
             </a>
-            <a href="#" @click.prevent="confirmDelete(department.id)"
-               class="btn btn-sm btn-danger">
+            <a @click.prevent="confirmDelete(department.id)" class="btn btn-sm btn-danger"
+               href="#">
               <i class="fas fa-trash-alt"></i> Удалить </a>
           </td>
         </tr>
@@ -39,29 +38,27 @@
 <script>
 
   export default {
+    async asyncData({$axios}) {
+      const departments = await $axios.$get('http://127.0.0.1:8000/department');
+      return {departments};
+    },
     data() {
       return {
         departments: {},
-        loadSpinner: false,
       };
-    },
-    mounted() {
-      this.fetch();
     },
     methods: {
       async fetch() {
-        this.loadSpinner = true;
         this.departments = await this.$axios.$get('http://127.0.0.1:8000/department');
-        this.loadSpinner = false;
-            },
-       openDepartment(id){
-         this.$router.push('/departments/edit/'+id);
-       },
-      async confirmDelete(id) {
-            await this.$axios.$delete('http://127.0.0.1:8000/department/' + id);
-            await this.fetch();
-          },
       },
+      openDepartment(id) {
+        this.$router.push('/departments/edit/' + id);
+      },
+      async confirmDelete(id) {
+        await this.$axios.$delete('http://127.0.0.1:8000/department/' + id);
+        await this.fetch();
+      },
+    },
   };
 </script>
 

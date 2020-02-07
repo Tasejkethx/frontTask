@@ -4,60 +4,59 @@
       <h4> Изменение сотрудника</h4>
     </div>
     <inputNameForm
-      name="name"
+      :value.sync="employee.name"
       id="name"
       label="Имя"
+      name="name"
       type="text"
-      :value.sync="employee.name"
     >
     </inputNameForm>
 
     <inputSurnameForm
-      name="surname"
+      :value.sync="employee.surname"
       id="surname"
       label="Фамилия"
+      name="surname"
       type="text"
-      :value.sync="employee.surname"
     >
     </inputSurnameForm>
 
     <inputPatronymicForm
-      name="patronymic"
+      :value.sync="employee.patronymic"
       id="patronymic"
       label="Отчество"
+      name="patronymic"
       type="text"
-      :value.sync="employee.patronymic"
     >
     </inputPatronymicForm>
 
     <radioSexForm
-      title="Пол"
-      :selected.sync="employee.sex"
       :radio-buttons="radios"
+      :selected.sync="employee.sex"
+      title="Пол"
     >
     </radioSexForm>
 
     <inputSalaryForm
-      name="salary"
+      :value.sync="employee.salary"
       id="salary"
       label="Заработная плата"
+      name="salary"
       type="number"
-      :value.sync="employee.salary"
     >
     </inputSalaryForm>
 
     <inputCheckboxForm
-      title="Отделения"
+      :check-buttons="departments"
       :selected="employee.department_id"
       @onDepChange="employee.department_id=$event"
-      :check-buttons="departments"
+      title="Отделения"
     >
     </inputCheckboxForm>
 
     <div class="button-wrapper-send-form">
-      <button type='submit' class="btn btn-primary mt-3 mr-2 form-width-button" :disabled="loadSpinner"
-              @click="editEmployee"><i
-        v-if="loadSpinner" class="fa fa-spin fa-spinner"></i> Редактировать
+      <button @click="editEmployee" class="btn btn-primary mt-3 mr-2 form-width-button"
+              type='submit'> Редактировать
       </button>
     </div>
   </div>
@@ -66,7 +65,7 @@
 <script>
 
   /*  import SwalAlerts from '../../Swal';
-    import validationErrors from '../../validationErrors';*/
+  import validationErrors from '../../validationErrors';*/
   import radioSexForm from '../../../components/FormComponents/radioForm';
   import inputSalaryForm from '../../../components/FormComponents/inputForm';
   import inputPatronymicForm from '../../../components/FormComponents/inputForm';
@@ -83,21 +82,21 @@
       radioSexForm,
       inputCheckboxForm,
     },
-
+    async asyncData({$axios, params}) {
+      const employee = await $axios.$get('http://127.0.0.1:8000/employee/' + params.id + '/edit');
+      const departments = await $axios.$get('http://127.0.0.1:8000/department');
+      let mass = [];
+      employee.departments.forEach((element) => {
+        mass.push(Number(element.id));
+      });
+      employee.department_id = mass;
+      return {employee, departments};
+    },
     validate({params}) {
       return /^\d+$/.test(params.id);
     },
-
     data() {
       return {
-        employee: {
-          name: String,
-          surname: String,
-          patronymic: String,
-          sex: null,
-          salary: Number,
-          department_id: [],
-        },
         radios: [
           {
             name: 'sex',
@@ -112,29 +111,12 @@
             value: 'female',
           }]
         ,
-        departments: [],
-        loadSpinner: false,
       };
-    },
-    mounted() {
-      this.fetch();
     },
     methods: {
       editEmployee() {
         this.$axios.$put('http://127.0.0.1:8000/employee/' + this.employee.id, this.employee);
       },
-      async fetch() {
-        this.loadSpinner = true;
-        this.employee = await this.$axios.$get('http://127.0.0.1:8000/employee/' + this.$route.params.id + '/edit');
-        this.departments = await this.$axios.$get('http://127.0.0.1:8000/department');
-        let mass = [];
-        this.employee.departments.forEach((element) => {
-          mass.push(Number(element.id));
-        });
-        this.employee.department_id = mass;
-        this.loadSpinner = false;
-      },
-
     },
   };
 </script>

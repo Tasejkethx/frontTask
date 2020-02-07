@@ -5,60 +5,60 @@
     </div>
 
     <inputNameForm
-      name="name"
+      :value.sync="employee.name"
       id="name"
       label="Имя"
+      name="name"
       type="text"
-      :value.sync="employee.name"
     >
     </inputNameForm>
 
     <inputSurnameForm
-      name="surname"
+      :value.sync="employee.surname"
       id="surname"
       label="Фамилия"
+      name="surname"
       type="text"
-      :value.sync="employee.surname"
     >
     </inputSurnameForm>
 
     <inputPatronymicForm
-      name="patronymic"
+      :value.sync="employee.patronymic"
       id="patronymic"
       label="Отчество"
+      name="patronymic"
       type="text"
-      :value.sync="employee.patronymic"
     >
     </inputPatronymicForm>
 
     <radioSexForm
-      title="Пол"
-      :selected.sync="employee.sex"
       :radio-buttons="radios"
+      :selected.sync="employee.sex"
+      title="Пол"
     >
     </radioSexForm>
 
     <inputSalaryForm
-      name="salary"
+      :value.sync="employee.salary"
       id="salary"
       label="Заработная плата"
+      name="salary"
       type="number"
-      :value.sync="employee.salary"
     >
     </inputSalaryForm>
 
     <inputCheckboxForm
-      title="Отделения"
+      :check-buttons="departments"
       :selected="employee.department_id"
       @onDepChange="employee.department_id=$event"
-      :check-buttons="departments"
+      title="Отделения"
     >
     </inputCheckboxForm>
 
     <div class="button-wrapper-send-form mt-2">
-      <button type='submit' class="btn btn-primary mt-3 mr-2 form-width-button" :disabled="loadSpinner"
-              @click="create"><i
-        v-if="loadSpinner" class="fa fa-spin fa-spinner"></i> Создать
+      <button @click="create" class="btn btn-primary mt-3 mr-2 form-width-button"
+              type='submit'>
+        Создать
       </button>
     </div>
   </div>
@@ -67,7 +67,7 @@
 <script>
 
   /* import SwalAlerts from '../../Swal';
-   import validationErrors from '../../validationErrors';*/
+ import validationErrors from '../../validationErrors';*/
   import radioSexForm from '../../components/FormComponents/radioForm';
   import inputSalaryForm from '../../components/FormComponents/inputForm';
   import inputPatronymicForm from '../../components/FormComponents/inputForm';
@@ -83,6 +83,10 @@
       inputSalaryForm,
       radioSexForm,
       inputCheckboxForm,
+    },
+    async asyncData({$axios}) {
+      const departments = await $axios.$get('http://127.0.0.1:8000/department');
+      return {departments};
     },
     data() {
       return {
@@ -108,21 +112,12 @@
             value: 'female',
           }]
         ,
-        departments: [],
-        loadSpinner: false,
+
       };
-    },
-    mounted() {
-      this.fetch();
     },
     methods: {
       async create() {
         let status = await this.$axios.$post('http://127.0.0.1:8000/employee', this.employee);
-      },
-      async fetch() {
-        this.loadSpinner = true;
-        this.departments = await this.$axios.$get('http://127.0.0.1:8000/department');
-        this.loadSpinner = false;
       },
     },
   };
