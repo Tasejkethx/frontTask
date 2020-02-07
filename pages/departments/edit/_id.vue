@@ -58,7 +58,7 @@ import validationErrors from '../../validationErrors';*/
 
 <style scoped>
   .form-width-button {
-    width: calc(35% - 60px);
+    width: calc(25% - 120px);
   }
 
   .flex-center {

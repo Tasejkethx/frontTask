@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <nuxt-link class="btn btn-dark mb-5" to="/departments/create">
+  <div class="mr-5 ml-5">
+    <nuxt-link class="btn btn-dark mb-4" to="/departments/create">
       <i class="fas fa-plus"></i> Добавить отдел
     </nuxt-link>
     <div class="table-responsive">

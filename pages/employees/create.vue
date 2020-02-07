@@ -3,7 +3,9 @@
     <div class="text-center py-3 mb-2">
       <h4> Добавление нового сотрудника</h4>
     </div>
-
+    <form  id="newForm">
+      <div class="flex-center">
+        <div class="mb-3">
     <inputNameForm
       :value.sync="employee.name"
       id="name"
@@ -54,20 +56,23 @@
       title="Отделения"
     >
     </inputCheckboxForm>
-
+    </div>
+      </div>
+    </form>
     <div class="button-wrapper-send-form mt-2">
       <button @click="create" class="btn btn-primary mt-3 mr-2 form-width-button"
               type='submit'>
         Создать
       </button>
     </div>
+
   </div>
 </template>
 
 <script>
 
   /* import SwalAlerts from '../../Swal';
- import validationErrors from '../../validationErrors';*/
+import validationErrors from '../../validationErrors';*/
   import radioSexForm from '../../components/FormComponents/radioForm';
   import inputSalaryForm from '../../components/FormComponents/inputForm';
   import inputPatronymicForm from '../../components/FormComponents/inputForm';
@@ -125,12 +130,19 @@
 
 <style scoped>
   .form-width-button {
-    width: calc(35% - 60px);
+    width: calc(25% - 120px);
   }
 
   .button-wrapper-send-form {
     display: flex;
     justify-content: center;
   }
+
+  .flex-center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
 </style>
 

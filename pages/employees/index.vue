@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <nuxt-link class="btn btn-dark mb-5" to="/employees/create">
+  <div class="mr-5 ml-5">
+    <nuxt-link class="btn btn-dark mb-4" to="/employees/create">
       <i class="fas fa-plus"></i> Добавить сотрудника
     </nuxt-link>
     <div class="table-responsive" id="success_message">

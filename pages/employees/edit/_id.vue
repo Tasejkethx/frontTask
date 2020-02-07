@@ -3,57 +3,62 @@
     <div class="text-center py-3 mb-2">
       <h4> Изменение сотрудника</h4>
     </div>
-    <inputNameForm
-      :value.sync="employee.name"
-      id="name"
-      label="Имя"
-      name="name"
-      type="text"
-    >
-    </inputNameForm>
+    <form id="newForm">
+      <div class="flex-center">
+        <div class="mb-3">
+          <inputNameForm
+            :value.sync="employee.name"
+            id="name"
+            label="Имя"
+            name="name"
+            type="text"
+          >
+          </inputNameForm>
 
-    <inputSurnameForm
-      :value.sync="employee.surname"
-      id="surname"
-      label="Фамилия"
-      name="surname"
-      type="text"
-    >
-    </inputSurnameForm>
+          <inputSurnameForm
+            :value.sync="employee.surname"
+            id="surname"
+            label="Фамилия"
+            name="surname"
+            type="text"
+          >
+          </inputSurnameForm>
 
-    <inputPatronymicForm
-      :value.sync="employee.patronymic"
-      id="patronymic"
-      label="Отчество"
-      name="patronymic"
-      type="text"
-    >
-    </inputPatronymicForm>
+          <inputPatronymicForm
+            :value.sync="employee.patronymic"
+            id="patronymic"
+            label="Отчество"
+            name="patronymic"
+            type="text"
+          >
+          </inputPatronymicForm>
 
-    <radioSexForm
-      :radio-buttons="radios"
-      :selected.sync="employee.sex"
-      title="Пол"
-    >
-    </radioSexForm>
+          <radioSexForm
+            :radio-buttons="radios"
+            :selected.sync="employee.sex"
+            title="Пол"
+          >
+          </radioSexForm>
 
-    <inputSalaryForm
-      :value.sync="employee.salary"
-      id="salary"
-      label="Заработная плата"
-      name="salary"
-      type="number"
-    >
-    </inputSalaryForm>
+          <inputSalaryForm
+            :value.sync="employee.salary"
+            id="salary"
+            label="Заработная плата"
+            name="salary"
+            type="number"
+          >
+          </inputSalaryForm>
 
-    <inputCheckboxForm
-      :check-buttons="departments"
-      :selected="employee.department_id"
-      @onDepChange="employee.department_id=$event"
-      title="Отделения"
-    >
-    </inputCheckboxForm>
-
+          <inputCheckboxForm
+            :check-buttons="departments"
+            :selected="employee.department_id"
+            @onDepChange="employee.department_id=$event"
+            title="Отделения"
+          >
+          </inputCheckboxForm>
+        </div>
+      </div>
+    </form>
     <div class="button-wrapper-send-form">
       <button @click="editEmployee" class="btn btn-primary mt-3 mr-2 form-width-button"
               type='submit'> Редактировать
@@ -65,7 +70,7 @@
 <script>
 
   /*  import SwalAlerts from '../../Swal';
-  import validationErrors from '../../validationErrors';*/
+import validationErrors from '../../validationErrors';*/
   import radioSexForm from '../../../components/FormComponents/radioForm';
   import inputSalaryForm from '../../../components/FormComponents/inputForm';
   import inputPatronymicForm from '../../../components/FormComponents/inputForm';
@@ -123,7 +128,13 @@
 
 <style scoped>
   .form-width-button {
-    width: calc(35% - 60px);
+    width: calc(25% - 120px);
+  }
+
+  .flex-center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
   }
 
   .button-wrapper-send-form {

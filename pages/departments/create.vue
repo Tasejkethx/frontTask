@@ -52,7 +52,7 @@
   }
 
   .form-width-button {
-    width: calc(35% - 60px);
+    width: calc(25% - 120px);
   }
 
   .button-wrapper-send-form {
