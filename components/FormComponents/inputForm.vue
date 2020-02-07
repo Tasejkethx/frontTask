@@ -12,7 +12,7 @@
       name: String,
       id: String,
       label: String,
-      value: String,
+      value: '',
       type:String,
     },
   };

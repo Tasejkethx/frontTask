@@ -32,7 +32,7 @@
             <a href="#" @click.prevent="openEmployee(employee.id)" class="btn btn-sm btn-info">
               <i class="fas fa-edit"></i> Редактировать
             </a>
-            <a  @click.prevent="confirmDelete(employee.id)" class="btn btn-sm btn-danger">
+            <a href="#" @click.prevent="confirmDelete(employee.id)" class="btn btn-sm btn-danger">
               <i class="fas fa-trash-alt"></i> Удалить
             </a>
           </td>
