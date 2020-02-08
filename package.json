@@ -17,7 +17,8 @@
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.4.0",
     "laravel-vue-pagination": "^2.3.1",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "sweetalert2": "^9.7.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
