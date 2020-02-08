@@ -3,60 +3,73 @@
     <div class="text-center py-3 mb-2">
       <h4> Добавление нового сотрудника</h4>
     </div>
-    <form  id="newForm">
+    <form id="newForm">
       <div class="flex-center">
         <div class="mb-3">
-    <inputNameForm
-      :value.sync="employee.name"
-      id="name"
-      label="Имя"
-      name="name"
-      type="text"
-    >
-    </inputNameForm>
 
-    <inputSurnameForm
-      :value.sync="employee.surname"
-      id="surname"
-      label="Фамилия"
-      name="surname"
-      type="text"
-    >
-    </inputSurnameForm>
+          <inputNameForm
+            :errorMessage="errorMessage.name && errorMessage.name[0]"
+            :value.sync="employee.name"
+            @onChangeMessage="errorMessage.name = $event"
+            id="name"
+            label="Имя"
+            name="name"
+            type="text"
+          >
+          </inputNameForm>
 
-    <inputPatronymicForm
-      :value.sync="employee.patronymic"
-      id="patronymic"
-      label="Отчество"
-      name="patronymic"
-      type="text"
-    >
-    </inputPatronymicForm>
+          <inputSurnameForm
+            :errorMessage="errorMessage.surname && errorMessage.surname[0]"
+            :value.sync="employee.surname"
+            @onChangeMessage="errorMessage.surname = $event"
+            id="surname"
+            label="Фамилия"
+            name="surname"
+            type="text"
+          >
+          </inputSurnameForm>
 
-    <radioSexForm
-      :radio-buttons="radios"
-      :selected.sync="employee.sex"
-      title="Пол"
-    >
-    </radioSexForm>
+          <inputPatronymicForm
+            :errorMessage="errorMessage.patronymic && errorMessage.patronymic[0]"
+            :value.sync="employee.patronymic"
+            @onChangeMessage="errorMessage.patronymic = $event"
+            id="patronymic"
+            label="Отчество"
+            name="patronymic"
+            type="text"
+          >
+          </inputPatronymicForm>
 
-    <inputSalaryForm
-      :value.sync="employee.salary"
-      id="salary"
-      label="Заработная плата"
-      name="salary"
-      type="number"
-    >
-    </inputSalaryForm>
+          <radioSexForm
+            :errorMessage="errorMessage.sex && errorMessage.sex[0]"
+            :radio-buttons="radios"
+            :selected.sync="employee.sex"
+            @onChangeMessage="errorMessage.sex = $event"
+            title="Пол"
+          >
+          </radioSexForm>
 
-    <inputCheckboxForm
-      :check-buttons="departments"
-      :selected="employee.department_id"
-      @onDepChange="employee.department_id=$event"
-      title="Отделения"
-    >
-    </inputCheckboxForm>
-    </div>
+          <inputSalaryForm
+            :errorMessage="errorMessage.salary && errorMessage.salary[0]"
+            :value.sync="employee.salary"
+            @onChangeMessage="errorMessage.salary = $event"
+            id="salary"
+            label="Заработная плата"
+            name="salary"
+            type="number"
+          >
+          </inputSalaryForm>
+
+          <inputCheckboxForm
+            :check-buttons="departments"
+            :errorMessage="errorMessage.department_id && errorMessage.department_id[0]"
+            :selected="employee.department_id"
+            @onChangeMessage="errorMessage.department_id = $event"
+            @onDepChange="employee.department_id=$event"
+            title="Отделения"
+          >
+          </inputCheckboxForm>
+        </div>
       </div>
     </form>
     <div class="button-wrapper-send-form mt-2">
@@ -70,9 +83,6 @@
 </template>
 
 <script>
-
-  /* import SwalAlerts from '../../Swal';
-import validationErrors from '../../validationErrors';*/
   import radioSexForm from '../../components/FormComponents/radioForm';
   import inputSalaryForm from '../../components/FormComponents/inputForm';
   import inputPatronymicForm from '../../components/FormComponents/inputForm';
@@ -115,14 +125,17 @@ import validationErrors from '../../validationErrors';*/
             id: 'female',
             label: 'Женщина',
             value: 'female',
-          }]
-        ,
-
+          }],
+        errorMessage: {},
       };
     },
     methods: {
       async create() {
-        let status = await this.$axios.$post('http://127.0.0.1:8000/employee', this.employee);
+        try {
+          await this.$axios.$post('http://127.0.0.1:8000/employee', this.employee);
+        } catch (e) {
+          this.errorMessage = e.response.data.errors;
+        }
       },
     },
   };

@@ -5,11 +5,11 @@
       <div class="custom-control custom-radio" v-for="radioButton in radioButtons" :key="radioButton.id">
         <input type="radio" class="custom-control-input" :id="radioButton.id" :name="radioButton.name"
                :value="radioButton.value"
-               v-on:input="$emit('update:selected', $event.target.value)"
+               v-on:input="onChange"
                v-model="selected">
         <label class="custom-control-label" :for="radioButton.id"> {{radioButton.label}} </label>
       </div>
-      <span class="mb-2 mt-2" id="sex"></span>
+      <span class="mt-2 mb-2 text-danger" v-if="errorMessage"> {{errorMessage}} </span>
     </div>
   </div>
 </template>
@@ -25,6 +25,13 @@
         label: String,
       },
       selected: String,
+      errorMessage: '',
+    },
+    methods: {
+      onChange(event) {
+        this.$emit('update:selected', event.target.value);
+        this.$emit('onChangeMessage', []);
+      }
     },
   };
 </script>

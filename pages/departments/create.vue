@@ -8,6 +8,8 @@
         <div class="mb-3">
           <inputNameForm
             :value.sync="department.name"
+            :errorMessage="errorMessage.name && errorMessage.name[0]"
+            @onChangeMessage="errorMessage.name = $event"
             id="name"
             label="Название отдела"
             name="name"
@@ -27,19 +29,25 @@
   import inputNameForm from '../../components/FormComponents/inputForm';
 
   export default {
-    components: {inputNameForm},
+    components: {
+      inputNameForm,
+    },
     data() {
       return {
         department: {
           name: '',
         },
+        errorMessage: {},
       };
     },
     methods: {
-      create() {
-        this.$axios.$post('http://127.0.0.1:8000/department', this.department);
+      async create() {
+        try{
+        await this.$axios.$post('http://127.0.0.1:8000/department', this.department);
+        } catch(e) {
+          this.errorMessage = e.response.data.errors;
+        }
       },
-
     },
   };
 </script>

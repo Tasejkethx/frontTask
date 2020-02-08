@@ -6,8 +6,11 @@
     <form id="newForm">
       <div class="flex-center">
         <div class="mb-3">
+
           <inputNameForm
+            :errorMessage="errorMessage.name && errorMessage.name[0]"
             :value.sync="employee.name"
+            @onChangeMessage="errorMessage.name = $event"
             id="name"
             label="Имя"
             name="name"
@@ -16,7 +19,9 @@
           </inputNameForm>
 
           <inputSurnameForm
+            :errorMessage="errorMessage.surname && errorMessage.surname[0]"
             :value.sync="employee.surname"
+            @onChangeMessage="errorMessage.surname = $event"
             id="surname"
             label="Фамилия"
             name="surname"
@@ -25,7 +30,9 @@
           </inputSurnameForm>
 
           <inputPatronymicForm
+            :errorMessage="errorMessage.patronymic && errorMessage.patronymic[0]"
             :value.sync="employee.patronymic"
+            @onChangeMessage="errorMessage.patronymic = $event"
             id="patronymic"
             label="Отчество"
             name="patronymic"
@@ -34,14 +41,18 @@
           </inputPatronymicForm>
 
           <radioSexForm
+            :errorMessage="errorMessage.sex && errorMessage.sex[0]"
             :radio-buttons="radios"
             :selected.sync="employee.sex"
+            @onChangeMessage="errorMessage.sex = $event"
             title="Пол"
           >
           </radioSexForm>
 
           <inputSalaryForm
+            :errorMessage="errorMessage.salary && errorMessage.salary[0]"
             :value.sync="employee.salary"
+            @onChangeMessage="errorMessage.salary = $event"
             id="salary"
             label="Заработная плата"
             name="salary"
@@ -51,7 +62,9 @@
 
           <inputCheckboxForm
             :check-buttons="departments"
+            :errorMessage="errorMessage.department_id && errorMessage.department_id[0]"
             :selected="employee.department_id"
+            @onChangeMessage="errorMessage.department_id = $event"
             @onDepChange="employee.department_id=$event"
             title="Отделения"
           >
@@ -88,7 +101,7 @@ import validationErrors from '../../validationErrors';*/
       inputCheckboxForm,
     },
     async asyncData({$axios, params}) {
-      const employee = await $axios.$get('http://127.0.0.1:8000/employee/' + params.id + '/edit');
+      const employee = await $axios.$get(`http://127.0.0.1:8000/employee/${params.id}/edit`);
       const departments = await $axios.$get('http://127.0.0.1:8000/department');
       let mass = [];
       employee.departments.forEach((element) => {
@@ -114,13 +127,18 @@ import validationErrors from '../../validationErrors';*/
             id: 'female',
             label: 'Женщина',
             value: 'female',
-          }]
-        ,
+          }],
+        errorMessage: {},
       };
     },
     methods: {
-      editEmployee() {
-        this.$axios.$put('http://127.0.0.1:8000/employee/' + this.employee.id, this.employee);
+      async editEmployee() {
+        try {
+          await this.$axios.$put('http://127.0.0.1:8000/employee/' + this.employee.id, this.employee);
+        } catch (e) {
+          console.log(e.response.data.errors);
+          this.errorMessage = e.response.data.errors;
+        }
       },
     },
   };

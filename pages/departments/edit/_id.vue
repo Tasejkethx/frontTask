@@ -7,7 +7,9 @@
       <div class="flex-center">
         <div class="mb-3">
           <inputNameForm
+            :errorMessage="errorMessage.name && errorMessage.name[0]"
             :value.sync="department.name"
+            @onChangeMessage="errorMessage.name = $event"
             id="name"
             label="Название отдела"
             name="name"
@@ -17,9 +19,8 @@
       </div>
     </form>
     <div class="button-wrapper-send-form">
-      <button :disabled="loadSpinner" @click="editDepartment" class="btn btn-primary mt-3 form-width-button"
-              type='submit'>
-        <i class="fa fa-spin fa-spinner" v-if="loadSpinner"></i> Редактировать
+      <button @click="editDepartment" class="btn btn-primary mt-3 form-width-button" type='submit'>
+        Редактировать
       </button>
     </div>
   </div>
@@ -38,19 +39,25 @@ import validationErrors from '../../validationErrors';*/
     validate({params}) {
       return /^\d+$/.test(params.id);
     },
-    components: {inputNameForm},
+    components: {
+      inputNameForm,
+    },
     data() {
       return {
         department: {
           id: null,
           name: '',
         },
-        loadSpinner: false,
+        errorMessage: {},
       };
     },
     methods: {
       async editDepartment() {
-        await this.$axios.put('http://127.0.0.1:8000/department/' + this.department.id, this.department);
+        try {
+          await this.$axios.put('http://127.0.0.1:8000/department/' + this.department.id, this.department);
+        } catch (e) {
+          this.errorMessage = e.response.data.errors;
+        }
       },
     },
   };

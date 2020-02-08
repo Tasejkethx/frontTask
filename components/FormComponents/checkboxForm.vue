@@ -9,7 +9,7 @@
       />
       <label class="custom-control-label" :for="checkButton.id"> {{checkButton.name}}</label>
     </div>
-    <span class="mb-2 mt-2" id="department_id"></span>
+    <span class="mt-2 mb-2 text-danger" v-if="errorMessage"> {{errorMessage}} </span>
   </div>
 </template>
 
@@ -19,6 +19,7 @@
       title: String,
       checkButtons: Array,
       selected: Array,
+      errorMessage: '',
     },
     data() {
       return {
@@ -28,6 +29,7 @@
     methods: {
       onDepChange: function() {
         this.$emit('onDepChange', this.isSelected);
+        this.$emit('onChangeMessage', []);
       },
     },
     watch: {
