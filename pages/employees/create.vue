@@ -89,6 +89,7 @@
   import inputSurnameForm from '../../components/FormComponents/inputForm';
   import inputNameForm from '../../components/FormComponents/inputForm';
   import inputCheckboxForm from '../../components/FormComponents/checkboxForm';
+  import SweetAlerts from '../../plugins/SweetAlerts';
 
   export default {
     components: {
@@ -133,6 +134,8 @@
       async create() {
         try {
           await this.$axios.$post('http://127.0.0.1:8000/employee', this.employee);
+          this.$router.push('/employees');
+          SweetAlerts.employeeSuccessAdded();
         } catch (e) {
           this.errorMessage = e.response.data.errors;
         }

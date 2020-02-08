@@ -7,8 +7,8 @@
       <div class="flex-center">
         <div class="mb-3">
           <inputNameForm
-            :value.sync="department.name"
             :errorMessage="errorMessage.name && errorMessage.name[0]"
+            :value.sync="department.name"
             @onChangeMessage="errorMessage.name = $event"
             id="name"
             label="Название отдела"
@@ -27,6 +27,7 @@
 <script>
 
   import inputNameForm from '../../components/FormComponents/inputForm';
+  import SweetAlerts from '../../plugins/SweetAlerts';
 
   export default {
     components: {
@@ -42,9 +43,11 @@
     },
     methods: {
       async create() {
-        try{
-        await this.$axios.$post('http://127.0.0.1:8000/department', this.department);
-        } catch(e) {
+        try {
+          await this.$axios.$post('http://127.0.0.1:8000/department', this.department);
+          this.$router.push('/departments');
+          SweetAlerts.departmentSuccessAdded();
+        } catch (e) {
           this.errorMessage = e.response.data.errors;
         }
       },

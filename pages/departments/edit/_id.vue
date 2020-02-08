@@ -27,9 +27,9 @@
 </template>
 
 <script>
-  /* import SwalAlerts from '../../Swal';
-import validationErrors from '../../validationErrors';*/
+
   import inputNameForm from '../../../components/FormComponents/inputForm';
+  import SweetAlerts from '../../../plugins/SweetAlerts';
 
   export default {
     async asyncData({$axios, params}) {
@@ -55,6 +55,8 @@ import validationErrors from '../../validationErrors';*/
       async editDepartment() {
         try {
           await this.$axios.put('http://127.0.0.1:8000/department/' + this.department.id, this.department);
+          this.$router.push('/departments');
+          SweetAlerts.departmentSuccessUpdated();
         } catch (e) {
           this.errorMessage = e.response.data.errors;
         }

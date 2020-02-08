@@ -90,6 +90,7 @@ import validationErrors from '../../validationErrors';*/
   import inputSurnameForm from '../../../components/FormComponents/inputForm';
   import inputNameForm from '../../../components/FormComponents/inputForm';
   import inputCheckboxForm from '../../../components/FormComponents/checkboxForm';
+  import SweetAlerts from '../../../plugins/SweetAlerts';
 
   export default {
     components: {
@@ -135,8 +136,9 @@ import validationErrors from '../../validationErrors';*/
       async editEmployee() {
         try {
           await this.$axios.$put('http://127.0.0.1:8000/employee/' + this.employee.id, this.employee);
+          this.$router.push('/employees');
+          SweetAlerts.employeeSuccessUpdated();
         } catch (e) {
-          console.log(e.response.data.errors);
           this.errorMessage = e.response.data.errors;
         }
       },
