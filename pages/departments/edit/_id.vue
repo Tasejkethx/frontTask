@@ -5,17 +5,13 @@
     </div>
     <form @submit.prevent="editDepartment">
       <div class="flex-center">
-        <div class="mb-3">
-          <inputNameForm
-            :errorMessage="errorMessage.name && errorMessage.name[0]"
-            :value.sync="department.name"
-            @delErrorMessage="errorMessage.name = $event"
-            id="name"
-            label="Название отдела"
-            name="name"
-          >
-          </inputNameForm>
-        </div>
+        <formComponent
+          :department="department"
+          :errorMessage="errorMessage"
+          @onChangeDepartments="department = $event"
+          @onChangeErrors="errorMessage = $event"
+        >
+        </formComponent>
       </div>
       <div class="button-wrapper-send-form">
         <button class="btn btn-primary mt-3 form-width-button" type="submit">
@@ -28,10 +24,11 @@
 
 <script>
 
-  import inputNameForm from '../../../components/FormComponents/inputForm';
   import SweetAlerts from '../../../plugins/SweetAlerts';
+  import formComponent from '../formComponent';
 
   export default {
+
     async asyncData({$axios, params}) {
       const department = await $axios.$get('http://127.0.0.1:8000/department/' + params.id + '/edit');
       return {department};
@@ -40,7 +37,7 @@
       return /^\d+$/.test(params.id);
     },
     components: {
-      inputNameForm,
+      formComponent,
     },
     data() {
       return {

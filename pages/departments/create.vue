@@ -5,17 +5,13 @@
     </div>
     <form @submit.prevent="create">
       <div class="flex-center">
-        <div class="mb-3">
-          <inputNameForm
-            :errorMessage="errorMessage.name && errorMessage.name[0]"
-            :value.sync="department.name"
-            @delErrorMessage="errorMessage.name = $event"
-            id="name"
-            label="Название отдела"
-            name="name"
-          >
-          </inputNameForm>
-        </div>
+        <formComponent
+          :department="department"
+          :errorMessage="errorMessage"
+          @onChangeDepartments="department = $event"
+          @onChangeErrors="errorMessage = $event"
+        >
+        </formComponent>
       </div>
       <div class="button-wrapper-send-form mt-2">
         <button class="btn btn-primary mt-3 form-width-button" type="submit"> Создать</button>
@@ -26,12 +22,12 @@
 
 <script>
 
-  import inputNameForm from '../../components/FormComponents/inputForm';
   import SweetAlerts from '../../plugins/SweetAlerts';
+  import formComponent from './formComponent';
 
   export default {
     components: {
-      inputNameForm,
+      formComponent,
     },
     data() {
       return {
