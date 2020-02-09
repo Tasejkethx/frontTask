@@ -14,19 +14,19 @@
           <th></th>
         </tr>
         </thead>
-        <tbody v-if="departments.length">
+        <tbody>
         <tr :key="department.id" v-for="department in departments">
           <td> {{department.id}}</td>
           <td> {{department.name}}</td>
           <td> {{department.amount}}</td>
-          <td> {{department.max_salary}}$</td>
+          <td> {{department.max_salary}} $</td>
           <td>
-            <a @click.prevent="openDepartment(department.id)" class="btn btn-sm btn-info" href="#">
+            <nuxt-link :to="'departments/edit/'+department.id" class="btn btn-sm btn-info">
               <i class="fas fa-edit"></i> Редактировать
-            </a>
-            <a @click.prevent="confirmDelete(department.id)" class="btn btn-sm btn-danger"
-               href="#">
-              <i class="fas fa-trash-alt"></i> Удалить </a>
+            </nuxt-link>
+            <button @click.prevent="confirmDelete(department.id)" class="btn btn-sm btn-danger">
+              <i class="fas fa-trash-alt"></i> Удалить
+            </button>
           </td>
         </tr>
         </tbody>
@@ -37,26 +37,22 @@
 
 <script>
 
+  import SweetAlerts from '../../plugins/SweetAlerts';
+
   export default {
-    async asyncData({$axios}) {
-      const departments = await $axios.$get('http://127.0.0.1:8000/department');
-      return {departments};
+    async fetch({store}) {
+      await store.dispatch('departments/fetch');
     },
-    data() {
-      return {
-        departments: {},
-      };
+    computed: {
+      departments() {
+        return this.$store.getters['departments/departments'];
+      },
     },
     methods: {
-      async fetch() {
-        this.departments = await this.$axios.$get('http://127.0.0.1:8000/department');
-      },
-      openDepartment(id) {
-        this.$router.push('/departments/edit/' + id);
-      },
       async confirmDelete(id) {
-        await this.$axios.$delete('http://127.0.0.1:8000/department/' + id);
-        await this.fetch();
+        const status = await this.$axios.$delete('http://127.0.0.1:8000/department/' + id);
+        await this.$store.dispatch('departments/fetch');
+        SweetAlerts.departmentDeleteMessage(status);
       },
     },
   };

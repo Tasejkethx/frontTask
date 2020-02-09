@@ -3,7 +3,7 @@
     <nuxt-link class="btn btn-dark mb-4" to="/employees/create">
       <i class="fas fa-plus"></i> Добавить сотрудника
     </nuxt-link>
-    <div class="table-responsive" id="success_message">
+    <div class="table-responsive">
       <table class="table table-striped table-sm">
         <thead>
         <tr>
@@ -25,15 +25,15 @@
           <td>{{employee.patronymic}}</td>
           <td v-if="employee.sex=='male'">мужчина</td>
           <td v-else> женщина</td>
-          <td>{{employee.salary}}$</td>
+          <td>{{employee.salary}} $</td>
           <td> {{getDepartmentNames(employee.departments)}}</td>
           <td>
-            <a @click.prevent="openEmployee(employee.id)" class="btn btn-sm btn-info" href="#">
+            <nuxt-link :to="'/employees/edit/'+employee.id" class="btn btn-sm btn-info">
               <i class="fas fa-edit"></i> Редактировать
-            </a>
-            <a @click.prevent="confirmDelete(employee.id)" class="btn btn-sm btn-danger" href="#">
+            </nuxt-link>
+            <button @click.prevent="confirmDelete(employee.id)" class="btn btn-sm btn-danger">
               <i class="fas fa-trash-alt"></i> Удалить
-            </a>
+            </button>
           </td>
         </tr>
         </tbody>
@@ -47,39 +47,35 @@
 
 <script>
   import pagination from 'laravel-vue-pagination';
+  import SweetAlerts from '../../plugins/SweetAlerts';
 
   export default {
-    components: {pagination},
-    async asyncData({$axios}) {
-      const employees = await $axios.$get('http://127.0.0.1:8000/employee');
-      return {employees};
+    components: {
+      pagination,
     },
-    data() {
-      return {
-        employees: {},
-      };
+    async fetch({store}) {
+      await store.dispatch('employees/fetch');
+    },
+    computed: {
+      employees() {
+        return this.$store.getters['employees/employees'];
+      },
     },
     methods: {
-      async fetch() {
-        this.employees = await this.$axios.$get('http://127.0.0.1:8000/employee');
-      },
-      openEmployee(id) {
-        this.$router.push('/employees/edit/' + id);
-      },
       async confirmDelete(id) {
-        await this.$axios.$delete('http://127.0.0.1:8000/employee/' + id);
-        await this.fetch();
+        const status = await this.$axios.$delete('http://127.0.0.1:8000/employee/' + id);
+        this.$store.dispatch('employees/fetch');
+        SweetAlerts.employeeDeleteMessage(status);
       },
       getDepartmentNames(employee) {
         let mass = [];
-        employee.forEach(function(element) {
+        employee.forEach(element => {
           mass.push(element.name);
         });
         return mass.join(', ');
       },
       async nextPageEmployees(page = 1) {
-        let data = await this.$axios.$get('http://127.0.0.1:8000/employee?page=' + page);
-        this.employees = data;
+        await this.$store.dispatch('employees/updatePagination', page);
       },
     },
   };

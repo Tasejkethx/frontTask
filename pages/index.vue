@@ -24,22 +24,24 @@
   import pagination from 'laravel-vue-pagination';
 
   export default {
-    components: {pagination},
-    async asyncData({$axios}) {
-      const departments = await $axios.$get('http://127.0.0.1:8000/department');
-      const employees = await $axios.$get('http://127.0.0.1:8000/employee');
-      return {employees, departments};
+    components: {
+      pagination,
     },
-    data() {
-      return {
-        employees: {},
-        departments: {},
-      };
+    async fetch({store}) {
+      await store.dispatch('departments/fetch');
+      await store.dispatch('employees/fetch');
+    },
+    computed: {
+      employees() {
+        return this.$store.getters['employees/employees'];
+      },
+      departments() {
+        return this.$store.getters['departments/departments'];
+      },
     },
     methods: {
       async nextPageEmployees(page = 1) {
-        let data = await this.$axios.$get('http://127.0.0.1:8000/employee?page=' + page);
-        this.employees = data;
+        await this.$store.dispatch('employees/updatePagination', page);
       },
     },
   };

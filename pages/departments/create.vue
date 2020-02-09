@@ -3,13 +3,13 @@
     <div class="text-center py-3 mb-2">
       <h4> Добавление нового отдела</h4>
     </div>
-    <form id="newForm">
+    <form @submit.prevent="create">
       <div class="flex-center">
         <div class="mb-3">
           <inputNameForm
             :errorMessage="errorMessage.name && errorMessage.name[0]"
             :value.sync="department.name"
-            @onChangeMessage="errorMessage.name = $event"
+            @delErrorMessage="errorMessage.name = $event"
             id="name"
             label="Название отдела"
             name="name"
@@ -17,10 +17,10 @@
           </inputNameForm>
         </div>
       </div>
+      <div class="button-wrapper-send-form mt-2">
+        <button class="btn btn-primary mt-3 form-width-button" type="submit"> Создать</button>
+      </div>
     </form>
-    <div class="button-wrapper-send-form mt-2">
-      <button @click="create" class="btn btn-primary mt-3 form-width-button"> Создать</button>
-    </div>
   </div>
 </template>
 
@@ -35,16 +35,14 @@
     },
     data() {
       return {
-        department: {
-          name: '',
-        },
+        department: {},
         errorMessage: {},
       };
     },
     methods: {
       async create() {
         try {
-          await this.$axios.$post('http://127.0.0.1:8000/department', this.department);
+          await this.$store.dispatch('departments/createDepartment', this.department);
           this.$router.push('/departments');
           SweetAlerts.departmentSuccessAdded();
         } catch (e) {
@@ -63,7 +61,7 @@
   }
 
   .form-width-button {
-    width: calc(25% - 120px);
+    width: 19%;
   }
 
   .button-wrapper-send-form {
