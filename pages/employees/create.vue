@@ -130,7 +130,7 @@
       async create() {
         try {
           await this.$store.dispatch('employees/createEmployee', this.employee);
-          this.$router.push('/employees');
+          await this.$router.push('/employees');
           SweetAlerts.employeeSuccessAdded();
         } catch (e) {
           this.errorMessage = e.response.data.errors;

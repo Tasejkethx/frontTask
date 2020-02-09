@@ -131,7 +131,7 @@
       async editEmployee() {
         try {
           await this.$store.dispatch('employees/updateEmployee', this.employee);
-          this.$router.push('/employees');
+          await this.$router.push('/employees');
           SweetAlerts.employeeSuccessUpdated();
         } catch (e) {
           this.errorMessage = e.response.data.errors;

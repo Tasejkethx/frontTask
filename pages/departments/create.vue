@@ -43,7 +43,7 @@
       async create() {
         try {
           await this.$store.dispatch('departments/createDepartment', this.department);
-          this.$router.push('/departments');
+          await this.$router.push('/departments');
           SweetAlerts.departmentSuccessAdded();
         } catch (e) {
           this.errorMessage = e.response.data.errors;

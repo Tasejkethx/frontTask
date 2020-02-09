@@ -51,7 +51,7 @@
       async editDepartment() {
         try {
           await this.$store.dispatch('departments/updateDepartment', this.department);
-          this.$router.push('/departments');
+          await this.$router.push('/departments');
           SweetAlerts.departmentSuccessUpdated();
         } catch (e) {
           this.errorMessage = e.response.data.errors;
