@@ -88,6 +88,7 @@
   import SweetAlerts from '../../plugins/SweetAlerts';
 
   export default {
+    middleware: ['employeeCreateAccess'],
     components: {
       inputNameForm,
       inputSurnameForm,
