@@ -61,12 +61,12 @@
 </template>
 
 <script>
-  import radioSexForm from '../../components/FormComponents/radioForm';
-  import inputSalaryForm from '../../components/FormComponents/inputForm';
-  import inputPatronymicForm from '../../components/FormComponents/inputForm';
-  import inputSurnameForm from '../../components/FormComponents/inputForm';
-  import inputNameForm from '../../components/FormComponents/inputForm';
-  import inputCheckboxForm from '../../components/FormComponents/checkboxForm';
+  import radioSexForm from './radioForm';
+  import inputSalaryForm from './inputForm';
+  import inputPatronymicForm from './inputForm';
+  import inputSurnameForm from './inputForm';
+  import inputNameForm from './inputForm';
+  import inputCheckboxForm from './checkboxForm';
 
   export default {
     components: {

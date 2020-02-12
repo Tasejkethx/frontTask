@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import inputNameForm from '../../components/FormComponents/inputForm';
+  import inputNameForm from './inputForm';
 
   export default {
     components: {

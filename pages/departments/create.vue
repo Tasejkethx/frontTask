@@ -23,7 +23,7 @@
 <script>
 
   import SweetAlerts from '../../plugins/SweetAlerts';
-  import formComponent from './formComponent';
+  import formComponent from '../../components/FormComponents/DepartmentFormComponent';
 
   export default {
     components: {

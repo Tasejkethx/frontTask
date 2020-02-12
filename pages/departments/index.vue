@@ -19,7 +19,8 @@
           <td> {{department.id}}</td>
           <td> {{department.name}}</td>
           <td> {{department.amount}}</td>
-          <td> {{department.max_salary}} $</td>
+          <td v-if="department.max_salary"> {{department.max_salary}} $</td>
+          <td v-else> 0 $</td>
           <td>
             <nuxt-link :to="'departments/edit/'+department.id" class="btn btn-sm btn-info">
               <i class="fas fa-edit"></i> Редактировать

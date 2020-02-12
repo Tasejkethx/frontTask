@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import formComponent from '../formComponent';
+  import formComponent from '../../../components/FormComponents/EmployeeFormComponent';
   import SweetAlerts from '../../../plugins/SweetAlerts';
 
   export default {
